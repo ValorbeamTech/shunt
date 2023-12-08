@@ -1,40 +1,31 @@
-import http from "http";
-import { port, hostname, databaseConnectionWithRetry } from "./config";
+import http from 'http';
+import {
+  port,
+  hostname,
+  databaseConnectionWithRetry,
+} from './config';
+import { routing } from './routes';
 
-// Middleware function
-function logInformation(
-  req: http.IncomingMessage,
-  _res: http.ServerResponse,
-  next: () => void
-) {
+// Function to log information
+function logInformation(req: http.IncomingMessage) {
   console.log(`Request received for ${req.url}`);
-  next(); // Proceed with the next middleware or route handler
 }
 
 // Create a server instance
-const app = http.createServer(
-  (_req: http.IncomingMessage, res: http.ServerResponse) => {
-    res.setHeader("Content-Type", "application/json");
-    res.statusCode = 200;
-    res.end(JSON.stringify({ success: true, message: "Hello, world!" }));
-  }
-);
+const app = http.createServer((req: http.IncomingMessage, res: http.ServerResponse) => {
+  const cleanUrl = req.url?.replace(/^\/+|\/+$/g, '');
 
-// Adding middleware to the server
-app.on("request", (req: http.IncomingMessage, res: http.ServerResponse) => {
-  logInformation(req, res, () => {});
+  logInformation(req); // Middleware: Log information
+  routing(cleanUrl, req, res); // Pass the request to the routing mechanism
 });
 
-// Establish the database connection before starting the server
+// Establish the database connection and start the server
 databaseConnectionWithRetry(3)
   .then(() => {
-    // Start listening to the server port after the database connection is established
-    app.listen(port, () =>
-      console.log(
-        `App is running on host http://${hostname} and listening on port ${port}`
-      )
-    );
+    app.listen(port, hostname, () => {
+      console.log(`App is running on host http://${hostname} and listening on port ${port}`);
+    });
   })
   .catch((error) => {
-    console.error("Failed to establish database connection:", error);
+    console.error('Failed to establish database connection:', error);
   });
