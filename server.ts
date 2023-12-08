@@ -13,7 +13,7 @@ function logInformation(_req: http.IncomingMessage, _res: http.ServerResponse, n
 const app = http.createServer((_req: http.IncomingMessage, res: http.ServerResponse)=>{
     res.setHeader('Content-Type', 'application/json')
     res.statusCode = 200
-    res.end("Hello, world!")
+    res.end(JSON.stringify({"success":true, "message":"Hello, world!"}))
 
 })
 

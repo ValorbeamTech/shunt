@@ -12,7 +12,7 @@ function logInformation(_req, _res, next) {
 const app = http_1.default.createServer((_req, res) => {
     res.setHeader('Content-Type', 'application/json');
     res.statusCode = 200;
-    res.end("Hello, world!");
+    res.end(JSON.stringify({ "success": true, "message": "Hello, world!" }));
 });
 app.on('request', (req, res) => {
     logInformation(req, res, () => {
