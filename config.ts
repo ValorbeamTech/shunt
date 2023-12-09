@@ -9,8 +9,8 @@ export async function databaseConnectionWithRetry(number_retry: number) {
   try {
     const client = new MongoClient(mongodbConnectionString);
     await client.connect();
-    console.log("Database connected");
-    return client.db(databaseName); // Return the database connection
+    console.log("Database connected")
+    return client.db(databaseName)
   } catch (error) {
     if (number_retry > 0) {
       console.log(
@@ -18,7 +18,7 @@ export async function databaseConnectionWithRetry(number_retry: number) {
       );
       setTimeout(() => {
         databaseConnectionWithRetry(number_retry - 1); // Retry connection
-      }, 3000);
+      }, 3000)
     } else {
       if (error instanceof Error) {
         console.log(`Database error: ${error.message}`)
