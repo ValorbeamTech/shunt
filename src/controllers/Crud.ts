@@ -2,6 +2,8 @@ import { sendResponse } from "../../routes";
 import { db } from "../../server";
 import http from 'http';
 
+
+
 export class Crud {
     req: http.IncomingMessage;
     res: http.ServerResponse;
@@ -11,9 +13,10 @@ export class Crud {
         this.res = res;
     }
 
-    async create(model: string, data: any) {
+    async create(data: any) {
         try {
-            const savedData = await db?.collection(model).insertOne(data);
+            const { username, password } = data
+            const savedData = await db?.collection(data?.model).insertOne({username, password});
             if (savedData?.insertedId) {
                 sendResponse(this.res, 200, { "success": true, "message": savedData.insertedId });
             } else {

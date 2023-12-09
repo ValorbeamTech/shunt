@@ -14,7 +14,7 @@ export function routing(endpoint: string | undefined, req: http.IncomingMessage,
             })
             req.on('end', ()=> {
                 const data = JSON.parse(body);
-                crud.create("users", data); // Pass the valid object to create method
+                crud.create(data); // Pass the valid object to create method
             })
             break
         default:
