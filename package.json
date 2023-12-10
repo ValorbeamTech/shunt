@@ -4,7 +4,7 @@
   "description": "a web api builder service for fast backend development",
   "main": "server.js",
   "scripts": {
-    "start": "tsc -w & nodemon prod/server.js",
+    "start": "start tsc -w && start nodemon prod/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
