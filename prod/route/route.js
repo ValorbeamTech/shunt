@@ -9,25 +9,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.create = void 0;
-const getParams_1 = require("../../utils/getParams");
-const sendResponse_1 = require("../../utils/sendResponse");
-const createUser_1 = require("./createControllers/createUser");
-function create(req, res) {
+exports.route = void 0;
+const getParams_1 = require("../utils/getParams");
+const create_1 = require("../controllers/create/create");
+const sendResponse_1 = require("../utils/sendResponse");
+function route(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const { model } = (0, getParams_1.getParams)(req);
-            switch (model) {
-                case "users":
-                    return (0, createUser_1.createUser)(req, res);
-                default: return (0, sendResponse_1.sendResponse)(res, 404, { message: "No match case found", data: null });
-            }
-        }
-        catch (err) {
-            const error = { message: err.message, data: err };
-            (0, sendResponse_1.sendResponse)(res, 500, error);
+        const { action, model } = (0, getParams_1.getParams)(req);
+        switch (action) {
+            case "create":
+                return (0, create_1.create)(req, res);
+            default: return (0, sendResponse_1.sendResponse)(res, 404, { message: "No match case found", data: null });
         }
     });
 }
-exports.create = create;
-//# sourceMappingURL=create.js.map
+exports.route = route;
+//# sourceMappingURL=route.js.map

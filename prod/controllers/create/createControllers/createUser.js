@@ -26,3 +26,4 @@ function createUser(req, res) {
     });
 }
 exports.createUser = createUser;
+//# sourceMappingURL=createUser.js.map

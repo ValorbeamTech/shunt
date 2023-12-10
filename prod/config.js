@@ -13,7 +13,11 @@ exports.databaseConnectionWithRetry = exports.port = exports.hostname = void 0;
 const mongodb_1 = require("mongodb");
 exports.hostname = "localhost";
 exports.port = 1000;
+<<<<<<< HEAD
 const mongodbConnectionString = "mongodb://localhost:27017";
+=======
+const mongodbConnectionString = "mongodb://127.0.0.1:27017";
+>>>>>>> b9e138efb298ca8653d7ea5c869f17353f606149
 const databaseName = "shunt_db";
 function databaseConnectionWithRetry(number_retry) {
     return __awaiter(this, void 0, void 0, function* () {

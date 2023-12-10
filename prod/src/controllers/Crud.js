@@ -20,6 +20,7 @@ class Crud {
     create(data) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+<<<<<<< HEAD
                 const { username, password } = data.body;
                 const createdBy = "user_id";
                 const updatedBy = "user_id";
@@ -29,6 +30,12 @@ class Crud {
                 const savedData = yield (server_1.db === null || server_1.db === void 0 ? void 0 : server_1.db.collection(data === null || data === void 0 ? void 0 : data.model).insertOne({ username, password, createdBy, updatedBy, createdAt, updatedAt, email }));
                 if (savedData === null || savedData === void 0 ? void 0 : savedData.insertedId) {
                     (0, routes_1.sendResponse)(this.res, 200, { "success": true, "message": savedData });
+=======
+                const { username, password } = data;
+                const savedData = yield (server_1.db === null || server_1.db === void 0 ? void 0 : server_1.db.collection(data === null || data === void 0 ? void 0 : data.model).insertOne({ username, password }));
+                if (savedData === null || savedData === void 0 ? void 0 : savedData.insertedId) {
+                    (0, routes_1.sendResponse)(this.res, 200, { "success": true, "message": savedData.insertedId });
+>>>>>>> b9e138efb298ca8653d7ea5c869f17353f606149
                 }
                 else {
                     (0, routes_1.sendResponse)(this.res, 500, { "success": false, "message": "Internal server error" });
