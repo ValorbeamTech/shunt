@@ -38,7 +38,7 @@ coverage/
 bower_components/
 
 # Directory for build artifacts
-dist/
+api/prod/
 
 # dotenv environment variable file
 .env
@@ -64,3 +64,5 @@ dist/
 
 # Optional yarn offline mirror
 .yarn-offline-mirror/
+
+
