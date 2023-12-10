@@ -8,14 +8,14 @@ export function routing(endpoint: string | undefined, req: http.IncomingMessage,
             sendResponse(res, 200, {"success":true, "message":"Shit!, it works!"})
             break
         case 'api/users/create':
-            let body = ''
-            req.on('data', (chunk)=>{
-                body += chunk
-            })
-            req.on('end', ()=> {
-                const data = JSON.parse(body);
-                crud.create(data); // Pass the valid object to create method
-            })
+                    let body = ''
+                    req.on('data', (chunk)=>{
+                        body += chunk
+                    })
+                    req.on('end', ()=> {
+                        const data = JSON.parse(body);
+                        crud.create(data); // Pass the valid object to create method
+                    })
             break
         default:
             sendResponse(res, 404, {"success":false, "message":"Ooops!, route is invalid!"})

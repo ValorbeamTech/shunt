@@ -24,11 +24,12 @@ function startServer(app: http.Server) {
 
 // Create collection with database instance
 function createCollection(db: Db) {
-  db.createCollection('users', {
+  db.command({
+    collMod:"users",
     validator: {
       $jsonSchema: {
         bsonType: 'object',
-        required: ['username', 'password'],
+        required: ['username', 'password', 'createdBy', 'updatedBy'],
         properties: {
           username: {
             bsonType: 'string',
@@ -38,16 +39,27 @@ function createCollection(db: Db) {
             bsonType: 'string',
             description: 'must be a string and is required.',
           },
+          createdBy: {
+              bsonType: 'string',
+              description: 'must be a string and is required.',
+            },
+          updatedBy: {
+              bsonType: 'string',
+              description: 'must be a string and is required.',
+            },
         },
       },
     },
+    validationAction:"error",
+    validationLevel: "strict",
   })
 
-    db.createCollection('visits', {
+    db.command({
+      collMod: "visits",
       validator: {
         $jsonSchema: {
           bsonType: 'object',
-          required: ['check_in', 'check_out'],
+          required: ['check_in', 'check_out', 'createdBy', 'updatedBy'],
           properties: {
             check_in: {
               bsonType: 'string',
@@ -57,10 +69,37 @@ function createCollection(db: Db) {
               bsonType: 'string',
               description: 'must be a string and is required.',
             },
+            createdBy: {
+              bsonType: 'string',
+              description: 'must be a string and is required.',
+            },
+            updatedBy: {
+              bsonType: 'string',
+              description: 'must be a string and is required.',
+            },
+            createdAt: {
+              bsonType: 'date',
+              description: 'must be a string and is required.',
+            },
+            updatedAt: {
+              bsonType: 'date',
+              description: 'must be a string and is required.',
+            },
+            deletedAt: {
+              bsonType: 'date',
+              description: 'must be a string and is required.',
+            },
           },
         },
       },
+      validationAction:"error",
+      validationLevel: "strict",
   })
+  db.collection('users').createIndex({ username: 1}, {unique: true, name: 'username'})
+  db.collection('users').createIndex({ email: 1}, {unique: true, name: 'email'})
+  db.collection('users').createIndex({ createdAt: 1})
+  db.collection('users').createIndex({ updatedAt: 1})
+  db.collection('users').createIndex({ deletedAt: 1})
 }
 
 
