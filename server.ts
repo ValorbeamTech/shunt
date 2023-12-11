@@ -2,9 +2,10 @@ import http from 'http'
 import { databaseConnectionWithRetry, port } from './connection/connection'
 import { HttpRequest, HttpResponse } from './config/httpInterface'
 import { route } from './route/route'
+import { authenticationMiddleWare } from './models/authenticationMiddleWare'
 
 const server = http.createServer((req: HttpRequest, res: HttpResponse) => {
-  route(req, res)
+  authenticationMiddleWare(req, res)
 })
 
 

@@ -4,5 +4,6 @@ export interface User {
     email: String,
     password: String,
     userStatus: String,
-    createdAt: Date
+    createdAt: Date,
+    roleId: Number
 }

@@ -1,0 +1,114 @@
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.authenticationMiddleWare = void 0;
+const jwt = __importStar(require("jsonwebtoken"));
+const freeRoutes_1 = require("../utils/freeRoutes");
+const getParams_1 = require("../utils/getParams");
+const sendResponse_1 = require("../utils/sendResponse");
+const readCookies_1 = require("../utils/readCookies");
+const route_1 = require("../route/route");
+const env_1 = require("../config/env");
+const permissionMiddleWare_1 = require("./permissionMiddleWare");
+function authenticationMiddleWare(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const { model, action } = (0, getParams_1.getParams)(req);
+            const isModelExist = freeRoutes_1.freeRoutes.some((route) => route.model === model);
+            const isActionExist = freeRoutes_1.freeRoutes.some((route) => route.action.includes(action));
+            if (isModelExist && isActionExist) {
+                (0, route_1.route)(req, res);
+            }
+            else {
+                verifyToken(req, res);
+            }
+        }
+        catch (err) {
+            return (0, sendResponse_1.sendResponse)(res, 403, { message: "Error during authentication ", data: err });
+        }
+    });
+}
+exports.authenticationMiddleWare = authenticationMiddleWare;
+function verifyToken(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const token = (0, readCookies_1.readCookies)(req, res);
+            if (token === "No cookies") {
+                authorizeWithBearerToken(req, res);
+            }
+            else {
+                jwt.verify(token, env_1.SECRET_KEY.toString(), (err, userDetails) => {
+                    if (err) {
+                        return (0, sendResponse_1.sendResponse)(res, 403, { message: "Forbidden, try to login" });
+                    }
+                    else {
+                        req.roleId = userDetails.roleId;
+                        req.userId = userDetails.userId;
+                        (0, permissionMiddleWare_1.permissionMiddleWare)(req, res);
+                    }
+                });
+            }
+        }
+        catch (err) {
+            return (0, sendResponse_1.sendResponse)(res, 403, { message: "Failed to verify token", data: err });
+        }
+    });
+}
+function authorizeWithBearerToken(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const authHeader = req.headers["authorization"];
+            if (typeof authHeader !== "undefined") {
+                const token = authHeader.split(" ")[1];
+                jwt.verify(token, env_1.SECRET_KEY.toString(), (err, userDetails) => {
+                    if (err) {
+                        return (0, sendResponse_1.sendResponse)(res, 403, { message: "Invalid Bearer token, try to login", data: token });
+                    }
+                    else {
+                        req.roleId = userDetails.roleId;
+                        req.userId = userDetails.userId;
+                        (0, permissionMiddleWare_1.permissionMiddleWare)(req, res);
+                    }
+                });
+            }
+            else {
+                return (0, sendResponse_1.sendResponse)(res, 403, { message: "Forbidden, try to login" });
+            }
+        }
+        catch (err) {
+            return (0, sendResponse_1.sendResponse)(res, 403, { message: "Error in attempt to verify token", data: err.message });
+        }
+    });
+}
+//# sourceMappingURL=authenticationMiddleWare.js.map

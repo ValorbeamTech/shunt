@@ -13,7 +13,6 @@ exports.getJsonData = void 0;
 const sendResponse_1 = require("./sendResponse");
 function getJsonData(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        //find a way to do not return any
         try {
             return new Promise((resolve, reject) => {
                 let data = '';

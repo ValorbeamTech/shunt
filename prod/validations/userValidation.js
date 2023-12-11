@@ -8,6 +8,7 @@ exports.userValidators = (0, yup_1.object)({
     email: (0, yup_1.string)().required().email(),
     password: (0, yup_1.string)().required().min(6),
     userStatus: (0, yup_1.string)().required().min(3),
-    createdAt: (0, yup_1.date)().required()
+    createdAt: (0, yup_1.date)().required(),
+    roleId: (0, yup_1.number)().required()
 });
 //# sourceMappingURL=userValidation.js.map

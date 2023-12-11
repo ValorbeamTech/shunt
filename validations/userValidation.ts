@@ -1,4 +1,4 @@
-import { object, string, date } from "yup"
+import { object, string, date, number } from "yup"
 import { User } from "../models/User"
 
 export const userValidators = object<User>({
@@ -7,5 +7,6 @@ export const userValidators = object<User>({
     email: string().required().email(),
     password: string().required().min(6),
     userStatus: string().required().min(3),
-    createdAt: date().required()
+    createdAt: date().required(),
+    roleId: number().required()
 })

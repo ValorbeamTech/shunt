@@ -5,9 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const http_1 = __importDefault(require("http"));
 const connection_1 = require("./connection/connection");
-const route_1 = require("./route/route");
+const authenticationMiddleWare_1 = require("./models/authenticationMiddleWare");
 const server = http_1.default.createServer((req, res) => {
-    (0, route_1.route)(req, res);
+    (0, authenticationMiddleWare_1.authenticationMiddleWare)(req, res);
 });
 (0, connection_1.databaseConnectionWithRetry)(3).then((res) => {
     console.log("response", res);

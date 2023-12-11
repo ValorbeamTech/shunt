@@ -1,0 +1,1 @@
+{"version":3,"file":"getQuery.js","sourceRoot":"","sources":["../../utils/getQuery.ts"],"names":[],"mappings":";;;;;;AAAA,8CAAqB;AAGrB,SAAgB,QAAQ,CAAC,GAAgB;IACrC,MAAM,SAAS,GAAG,aAAG,CAAC,KAAK,CAAC,GAAG,CAAC,GAAG,IAAI,EAAE,EAAE,IAAI,CAAC,CAAA;IAChD,MAAM,WAAW,GAAG,SAAS,CAAC,KAAK,CAAA;IACnC,OAAO,WAAW,CAAA;AACtB,CAAC;AAJD,4BAIC"}
