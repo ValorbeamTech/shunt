@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.create = void 0;
 const getParams_1 = require("../../utils/getParams");
 const sendResponse_1 = require("../../utils/sendResponse");
+const addBook_1 = require("./createControllers/addBook");
 const createUser_1 = require("./createControllers/createUser");
 function create(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -20,6 +21,8 @@ function create(req, res) {
             switch (model) {
                 case "users":
                     return (0, createUser_1.createUser)(req, res);
+                case "books":
+                    return (0, addBook_1.addBook)(req, res);
                 default: return (0, sendResponse_1.sendResponse)(res, 404, { message: "No match case found", data: null });
             }
         }

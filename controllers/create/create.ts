@@ -1,6 +1,7 @@
 import { HttpRequest, HttpResponse } from "../../config/httpInterface";
 import { getParams } from "../../utils/getParams";
 import { sendResponse } from "../../utils/sendResponse";
+import { addBook } from "./createControllers/addBook";
 import { createUser } from "./createControllers/createUser";
 
 export async function create(req: HttpRequest, res: HttpResponse) {
@@ -9,6 +10,9 @@ export async function create(req: HttpRequest, res: HttpResponse) {
         switch (model) {
             case "users":
                 return createUser(req, res)
+
+            case "books":
+                return addBook(req, res)
 
             default: return sendResponse(res, 404, { message: "No match case found", data: null })
         }

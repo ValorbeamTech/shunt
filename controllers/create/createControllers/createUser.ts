@@ -1,10 +1,11 @@
-import { HttpRequest, HttpResponse } from "../../../config/httpInterface"
+import *  as bcryptjs from "bcryptjs"
+import { User } from "../../../models/User"
 import { activeDb } from "../../../connection/connection"
 import { sendResponse } from "../../../utils/sendResponse"
-import { userValidators } from "../../../validations/userValidation"
-import { User } from "../../../models/User"
 import { getJsonData } from "../../../utils/getDataFromReq"
-import *  as bcryptjs from "bcryptjs"
+import { userValidators } from "../../../validations/userValidation"
+import { HttpRequest, HttpResponse } from "../../../config/httpInterface"
+import { generatePermissions } from "../../../utils/generatePermissions"
 
 
 export async function createUser(req: HttpRequest, res: HttpResponse) {
@@ -18,11 +19,13 @@ export async function createUser(req: HttpRequest, res: HttpResponse) {
 
         const isUserExist = await activeDb.collection("users").findOne({ email: data.email })
 
+
         if (isUserExist) { sendResponse(res, 409, { message: "Email already exist", data: isUserExist }) } else {
             const hashedPassword = await bcryptjs.hash(data.password, 10)
             const newUser = await activeDb.collection("users").insertOne({
                 ...data,
-                password: hashedPassword
+                password: hashedPassword,
+                permissions: generatePermissions(data.roleId)
             })
             const response = { message: "New users created", data: newUser }
             sendResponse(res, 200, response)

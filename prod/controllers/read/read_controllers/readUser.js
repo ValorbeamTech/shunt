@@ -47,17 +47,21 @@ exports.readUser = void 0;
 const env_1 = require("../../../config/env");
 const connection_1 = require("../../../connection/connection");
 const getDataFromReq_1 = require("../../../utils/getDataFromReq");
+const getParams_1 = require("../../../utils/getParams");
 const getQuery_1 = require("../../../utils/getQuery");
 const sendResponse_1 = require("../../../utils/sendResponse");
 const bcryptjs = __importStar(require("bcryptjs"));
 const jwt = __importStar(require("jsonwebtoken"));
+const createObjectId_1 = require("../../../utils/createObjectId");
 function readUser(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const { id, login } = (0, getQuery_1.getQuery)(req);
-            if (id) { }
-            else if (login) {
-                loginUser(req, res);
+            const { controller } = (0, getParams_1.getParams)(req);
+            switch (controller) {
+                case 'id':
+                    return getSpecificUser(req, res);
+                case 'login':
+                    return loginUser(req, res);
             }
         }
         catch (err) {
@@ -87,8 +91,30 @@ function loginUser(req, res) {
                 data: userData,
                 token: token
             };
-            res.setHeader('Set-Cookie', `token=${token}; Max-Age=${maxAge}; HttpOnly`);
+            // res.setHeader('Set-Cookie', `token=${token}; Max-Age=${maxAge}; HttpOnly`)
+            res.setHeader('Set-Cookie', `token=${token}; Max-Age=${maxAge}; HttpOnly; Secure;`);
             return (0, sendResponse_1.sendResponse)(res, 200, response);
+        }
+        catch (err) {
+            const error = { message: err.message, data: err };
+            return (0, sendResponse_1.sendResponse)(res, 500, error);
+        }
+    });
+}
+function getSpecificUser(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const { id } = (0, getQuery_1.getQuery)(req);
+            const newObjectId = (0, createObjectId_1.createObjectId)(id);
+            const userDetails = yield connection_1.activeDb.collection("users")
+                .findOne({ _id: newObjectId });
+            if (userDetails) {
+                return (0, sendResponse_1.sendResponse)(res, 200, userDetails);
+            }
+            else {
+                const message = { message: "User not found ", data: null };
+                return (0, sendResponse_1.sendResponse)(res, 500, message);
+            }
         }
         catch (err) {
             const error = { message: err.message, data: err };

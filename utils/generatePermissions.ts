@@ -1,4 +1,4 @@
-import { Permission } from "../model/User"
+import { Permission } from "../models/User"
 import { modelsList } from "./modelsList"
 
 export function generatePermissions(roleId: Number) {

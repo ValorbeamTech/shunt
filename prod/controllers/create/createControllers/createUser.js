@@ -33,11 +33,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createUser = void 0;
+const bcryptjs = __importStar(require("bcryptjs"));
 const connection_1 = require("../../../connection/connection");
 const sendResponse_1 = require("../../../utils/sendResponse");
-const userValidation_1 = require("../../../validations/userValidation");
 const getDataFromReq_1 = require("../../../utils/getDataFromReq");
-const bcryptjs = __importStar(require("bcryptjs"));
+const userValidation_1 = require("../../../validations/userValidation");
+const generatePermissions_1 = require("../../../utils/generatePermissions");
 function createUser(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -52,7 +53,7 @@ function createUser(req, res) {
             }
             else {
                 const hashedPassword = yield bcryptjs.hash(data.password, 10);
-                const newUser = yield connection_1.activeDb.collection("users").insertOne(Object.assign(Object.assign({}, data), { password: hashedPassword }));
+                const newUser = yield connection_1.activeDb.collection("users").insertOne(Object.assign(Object.assign({}, data), { password: hashedPassword, permissions: (0, generatePermissions_1.generatePermissions)(data.roleId) }));
                 const response = { message: "New users created", data: newUser };
                 (0, sendResponse_1.sendResponse)(res, 200, response);
             }

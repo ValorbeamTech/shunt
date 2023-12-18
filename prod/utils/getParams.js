@@ -10,7 +10,8 @@ function getParams(req) {
     const pathSegments = parsedUrl.pathname.split('/').filter(segment => segment !== '');
     return {
         action: pathSegments[0],
-        model: pathSegments[1]
+        model: pathSegments[1],
+        controller: pathSegments[2]
     };
 }
 exports.getParams = getParams;

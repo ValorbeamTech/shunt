@@ -5,5 +5,12 @@ export interface User {
     password: String,
     userStatus: String,
     createdAt: Date,
-    roleId: Number
+    roleId: Number,
+    permissions: Array<Permission>
+}
+
+export interface Permission {
+    id: String,
+    name: String,
+    list: Array<String>
 }

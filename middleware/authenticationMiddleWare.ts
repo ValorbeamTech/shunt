@@ -31,7 +31,7 @@ async function verifyToken(req: HttpRequest, res: HttpResponse) {
         if (token === "No cookies") { authorizeWithBearerToken(req, res) } else {
             jwt.verify(token, SECRET_KEY.toString(), (err, userDetails) => {
                 if (err) {
-                    return sendResponse(res, 403, { message: "Forbidden, try to login" })
+                    return sendResponse(res, 403, { message: "Forbidden, try to login", data: token })
                 } else {
                     req.roleId = userDetails.roleId
                     req.userId = userDetails.userId

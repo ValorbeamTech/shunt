@@ -7,11 +7,13 @@ export function getParams(req: HttpRequest): Params {
 
     return {
         action: pathSegments[0],
-        model: pathSegments[1]
+        model: pathSegments[1],
+        controller: pathSegments[2]
     }
 }
 
 interface Params {
     action: String,
-    model: String
+    model: String,
+    controller: String
 }
