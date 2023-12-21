@@ -13,7 +13,7 @@ export function getParams(req: HttpRequest): Params {
 }
 
 interface Params {
-    action: String,
-    model: String,
+    action: string,
+    model: string,
     controller: String
 }

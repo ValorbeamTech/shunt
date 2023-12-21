@@ -16,7 +16,7 @@ const create_1 = require("../controllers/create/create");
 const read_1 = require("../controllers/read/read");
 function route(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { action, model } = (0, getParams_1.getParams)(req);
+        const { action } = (0, getParams_1.getParams)(req);
         switch (action) {
             case "create":
                 return (0, create_1.create)(req, res);

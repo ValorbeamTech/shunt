@@ -7,7 +7,7 @@ import { create } from '../controllers/create/create'
 import { read } from '../controllers/read/read'
 
 export async function route(req: HttpRequest, res: HttpResponse) {
-    const { action, model } = getParams(req)
+    const { action } = getParams(req)
     switch (action) {
         case "create":
             return create(req, res)
